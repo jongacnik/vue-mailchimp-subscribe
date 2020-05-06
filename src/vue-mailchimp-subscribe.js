@@ -22,6 +22,8 @@ export default {
   data() {
     return {
       email: null,
+      firstname: null,
+      lastname: null,
       success: false,
       error: null,
       loading: false,
@@ -30,17 +32,32 @@ export default {
 
   computed: {
     data() {
-      return queryString.stringify({
+      let data = {
         u: this.userId,
         id: this.listId,
         EMAIL: this.email,
-      })
+      }
+      if (this.firstname) {
+        data.FNAME = this.firstname
+      }
+      if (this.lastname) {
+        data.LNAME = this.lastname
+      }
+      return queryString.stringify(data)
     },
   },
 
   methods: {
     setEmail(value = '') {
       this.email = value.trim()
+    },
+
+    setFirst(value = '') {
+      this.firstname = value.trim()
+    },
+
+    setLast(value = '') {
+      this.lastname = value.trim()
     },
 
     subscribe() {
@@ -73,6 +90,8 @@ export default {
       } else {
         this.success = true
         this.email = null
+        this.firstname = null
+        this.lastname = null
         this.$emit('success')
       }
     },
@@ -86,6 +105,8 @@ export default {
     return this.$scopedSlots.default({
       subscribe: this.subscribe,
       setEmail: this.setEmail,
+      setFirst: this.setFirst,
+      setLast: this.setLast,
       error: this.error,
       success: this.success,
       loading: this.loading,
